@@ -1,5 +1,5 @@
-const jwt = require("jsonwebtoken");
-const ACCESS_TOKEN_SECRET = mysecret;
+import jwt from "jsonwebtoken";
+const ACCESS_TOKEN_SECRET = "JWT";
 
 //next:call when token is valid -> go to next middleware -> next request handler
 const verifyToken = (req, res, next) => {
@@ -18,7 +18,6 @@ const verifyToken = (req, res, next) => {
     //verify token
     try {
         const userDecoded = jwt.verify(token, ACCESS_TOKEN_SECRET);
-        //console.log(decoded);
 
         req.id = userDecoded.id; //luu userid vao reqid
         next(); //da verify thanh cong -> next middleware
@@ -28,4 +27,4 @@ const verifyToken = (req, res, next) => {
     }
 };
 
-module.exports = verifyToken;
+export default verifyToken;
