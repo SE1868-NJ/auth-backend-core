@@ -1,5 +1,7 @@
 import dotenv from "dotenv";
-dotenv.config();
+dotenv.config({
+    path: "../.env",
+});
 
 // DB config
 export const DATABASE = process.env.DATABASE || "db";
