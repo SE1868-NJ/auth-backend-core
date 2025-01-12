@@ -5,25 +5,40 @@ import { User } from "../models/user.model.js";
 export const login = (req, res) => {
     // get email, password from user through request.body
     const { email, password } = req.body;
-    // get all users from db
-    User.findAll().then((users) => {
-        // check user valid or not
-        const isValid = users.some((user) => user.email === email && user.password === password);
 
-        if (isValid) {
-            const accessToken = jwt.sign(
-                {
-                    userInfo: "userInfo",
-                },
-                JWT_SECRET,
+    if (!email || !password) {
+        res.status(401).json({
+            message: "Invalid email, password!",
+        });
+    }
+
+    // get all users from db
+    User.findAll()
+        .then((users) => {
+            // check user valid or not
+            const isValid = users.some(
+                (user) => user.email === email && user.password === password,
             );
+
+            if (isValid) {
+                const accessToken = jwt.sign(
+                    {
+                        userInfo: "userInfo",
+                    },
+                    JWT_SECRET,
+                );
+                res.status(200).json({
+                    token: accessToken,
+                });
+            } else {
+                res.status(401).json({
+                    message: "Invalid email, password!",
+                });
+            }
+        })
+        .catch((err) => {
             res.status(500).json({
-                token: accessToken,
+                error: "An error occured during login!",
             });
-        } else {
-            res.status(401).json({
-                message: "Invalid email, password!",
-            });
-        }
-    });
+        });
 };
