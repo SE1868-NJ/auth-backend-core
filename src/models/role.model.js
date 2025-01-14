@@ -2,7 +2,7 @@ import { DataTypes } from "sequelize";
 import sequelize from "../config/sequelize.config.js";
 
 export const Role = sequelize.define("Role", {
-    roleName: {
+    role_name: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {

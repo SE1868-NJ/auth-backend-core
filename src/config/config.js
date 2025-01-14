@@ -3,6 +3,9 @@ dotenv.config({
     path: "../.env",
 });
 
+// JWT SECRET
+export const JWT_SECRET = process.env.JWT_SECRET || "jwtsecret";
+
 // DB config
 export const DATABASE = process.env.DATABASE || "db";
 export const USERNAME = process.env.USERNAME || "root";

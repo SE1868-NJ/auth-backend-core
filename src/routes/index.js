@@ -1,8 +1,7 @@
 import authRouter from "./auth.route.js";
 
 const route = (app) => {
-    app.use("/auth", authRouter);
-    app.use("/admin", authRouter);
+    app.use("/api/v1/auth", authRouter);
 };
 
 export default route;

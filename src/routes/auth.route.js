@@ -1,26 +1,24 @@
 import express from "express";
-import { User } from "../models/user.model.js";
+import { login, register } from "../controllers/auth.controller.js";
 
 const authRouter = express.Router();
 
-authRouter.get("/select", (req, res) => {
-    User.findAll().then((users) => {
-        res.status(500).json({
-            message: users,
-        });
-    });
-});
+authRouter.post("/login", login);
+authRouter.post("/register", register);
 
-authRouter.get("/", (req, res) => {
-    res.status(500).json({
-        message: "root auth",
-    });
-});
-
-authRouter.get("/", (req, res) => {
-    res.status(500).json({
-        message: "root auth",
-    });
-});
+// authRouter.get("/insert", (req, res) => {
+//     User.create({
+//         google_id: "googleid",
+//         email: "khuyen.dev183@gmail.com",
+//         password: "123456789",
+//         phone: "0912345678",
+//         firstname: "Khuyen",
+//         lastname: "Tran",
+//         gender: "male"
+//     })
+//     res.status(500).json({
+//         message: "root auth",
+//     });
+// });
 
 export default authRouter;
