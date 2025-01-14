@@ -4,6 +4,7 @@ import cors from "cors";
 import express from "express";
 import morgan from "morgan";
 import db from "./models/index.js";
+import { User } from "./models/user.model.js";
 import route from "./routes/index.js";
 
 const app = express();
@@ -30,6 +31,12 @@ try {
 } catch (error) {
     console.error("Error occurs when connecting to database!", error);
 }
+
+app.get("/select", (req, res) => {
+    res.status(200).json({
+        message: "get users success!",
+    });
+});
 
 app.listen(PORT, (err) => {
     if (!err) {
