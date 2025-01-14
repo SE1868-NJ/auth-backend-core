@@ -87,7 +87,8 @@ export const User = sequelize.define(
 
         dob: {
             type: DataTypes.DATE,
-            allowNull: true,
+            allowNull: false,
+
             validate: {
                 isDate: {
                     msg: "Ngày sinh phải là một định dạng ngày hợp lệ.",

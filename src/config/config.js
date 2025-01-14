@@ -5,8 +5,8 @@ dotenv.config();
 export const JWT_SECRET = process.env.JWT_SECRET || "jwtsecret";
 
 // DB config
-export const DATABASE = process.env.DATABASE || "db";
-export const USERNAME = process.env.USERNAME || "root";
-export const PASSWORD = process.env.PASSWORD || "123";
+export const DATABASE = "user";
+export const USERNAME = "root";
+export const PASSWORD = process.env.PASSWORD || "spring";
 export const DIALECT = process.env.DIALECT || "mysql";
 export const DBHOST = process.env.DIALECT || "localhost";
