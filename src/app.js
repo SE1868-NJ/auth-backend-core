@@ -23,14 +23,6 @@ app.use(
     }),
 );
 
-/* check db connection */
-try {
-    await db.sequelize.authenticate();
-    console.log("Database connected successfully!");
-} catch (error) {
-    console.error("Error occurs when connecting to database!", error);
-}
-
 app.listen(PORT, (err) => {
     if (!err) {
         console.log(`Server is running on http://localhost:${PORT}`);
