@@ -20,11 +20,11 @@ export const Role = sequelize.define(
     },
 );
 
-Role.associations = (models) => {
-    Role.belongsToMany(models.User, {
-        through: models.User_Role,
-        foreignKey: "role_id",
-        as: "users",
+// Định nghĩa mối quan hệ
+Role.associate = (models) => {
+    Role.hasMany(models.User, {
+        foreignKey: "role_id", // Trường khóa ngoại trong bảng `User`
+        as: "users", // Bí danh để truy vấn
     });
 };
 
