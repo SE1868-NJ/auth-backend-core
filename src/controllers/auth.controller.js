@@ -1,8 +1,9 @@
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config/config.js";
+import sequelize from "../config/sequelize.config.js";
+import { Role } from "../models/role.model.js";
 import { User } from "../models/user.model.js";
-const bcrypt = require("bcryptjs");
-const authService = require("../service/auth.service.js");
 
 export const login = (req, res) => {
     // get email, password from user through request.body
@@ -52,12 +53,12 @@ const hashPassword = (password) => {
 };
 
 export const register = async (req, res) => {
+    const transaction = await sequelize.transaction(); // bắt đầu 1 transaction
     try {
-        const { email, password, phone, firstname, lastname, dob, gender, status } =
-            userCreationRequest;
+        const { email, password, phone, firstname, lastname, dob, gender, status } = req.body;
 
         // Check if the user already exists
-        const isUserExist = await db.User.findOne({
+        const isUserExist = await User.findOne({
             where: { email: email },
         });
 
@@ -66,7 +67,7 @@ export const register = async (req, res) => {
             const hashedPassword = hashPassword(password);
 
             // Create the user
-            const user = await db.User.create({
+            const user = await User.create({
                 email,
                 password: hashedPassword,
                 phone,
@@ -78,13 +79,18 @@ export const register = async (req, res) => {
             });
 
             // Assign default role
-            const role_default = await db.Role.findOne({
+            const role_default = await Role.findOne({
                 where: { role_name: "USER" },
             });
 
             if (role_default) {
-                await user.addRole(role_default); // Make sure `addRole` is correctly set in associations
+                await User_Role.create({
+                    user_id: user.user_id,
+                    role_id: role_default.role_id,
+                }); // Make sure `addRole` is correctly set in associations
             }
+
+            await transaction.commit();
 
             res.status(200).json({
                 code: 200,
@@ -97,6 +103,7 @@ export const register = async (req, res) => {
             });
         }
     } catch (error) {
+        await transaction.rollback();
         res.status(500).json({
             error: "An error occured during login!",
         });
