@@ -1,12 +1,6 @@
 import dotenv from "dotenv";
-dotenv.config();
-
+dotenv.config("./.env");
 // JWT SECRET
 export const JWT_SECRET = process.env.JWT_SECRET || "jwtsecret";
 
-// DB config
-export const DATABASE = "user";
-export const USERNAME = "root";
-export const PASSWORD = process.env.PASSWORD || "spring";
-export const DIALECT = process.env.DIALECT || "mysql";
-export const DBHOST = process.env.DIALECT || "localhost";
+export const DB = process.env.DB || "postgres://postgres:eomeo5104@localhost:5432/swp";
