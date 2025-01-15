@@ -116,7 +116,7 @@ export const User = sequelize.define(
             defaultValue: "active",
         },
         role_id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.INTEGER, // Trường này không cần thiết phải khai báo nếu dùng `belongsTo`
         },
     },
     {
@@ -124,9 +124,11 @@ export const User = sequelize.define(
     },
 );
 
-User.associations = (models) => {
+// Định nghĩa mối quan hệ
+User.associate = (models) => {
     User.belongsTo(models.Role, {
-        foreignKey: "role_id",
+        foreignKey: "role_id", // Trường khóa ngoại trong bảng `User`
+        as: "role", // Bí danh để truy vấn
     });
 };
 
