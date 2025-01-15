@@ -115,6 +115,9 @@ export const User = sequelize.define(
             type: DataTypes.ENUM("active", "deactive"),
             defaultValue: "active",
         },
+        role_id: {
+            type: DataTypes.INTEGER,
+        },
     },
     {
         tableName: "users",
@@ -122,10 +125,8 @@ export const User = sequelize.define(
 );
 
 User.associations = (models) => {
-    User.belongsToMany(models.Role, {
-        through: models.User_Role,
-        foreignKey: "user_id",
-        as: "roles",
+    User.belongsTo(models.Role, {
+        foreignKey: "role_id",
     });
 };
 
