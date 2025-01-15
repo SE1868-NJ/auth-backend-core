@@ -1,9 +1,9 @@
-import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config/config.js";
 import sequelize from "../config/sequelize.config.js";
 import { Role } from "../models/role.model.js";
 import { User } from "../models/user.model.js";
+import { hashPassword } from "../utils/index.js";
 
 export const login = (req, res) => {
     // get email, password from user through request.body
@@ -44,12 +44,6 @@ export const login = (req, res) => {
                 error: "An error occured during login!",
             });
         });
-};
-
-// Function to hash password
-const hashPassword = (password) => {
-    const salt = bcrypt.genSaltSync(8); // Generate a unique salt for each password
-    return bcrypt.hashSync(password, salt);
 };
 
 export const register = async (req, res) => {
