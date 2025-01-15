@@ -4,7 +4,6 @@ import { JWT_SECRET } from "../config/config.js";
 import sequelize from "../config/sequelize.config.js";
 import { Role } from "../models/role.model.js";
 import { User } from "../models/user.model.js";
-import { User_Role } from "../models/user_role.model.js";
 
 export const login = (req, res) => {
     // get email, password from user through request.body
