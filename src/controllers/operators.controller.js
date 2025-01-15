@@ -19,35 +19,40 @@ export const getOperators = (req, res) => {
         });
 };
 
-export const createOperators = (req, res) => {
-    // try {
-    //     const { firstname, lastname, email, password, phone, dob, gender } = req.body;
-    //     const newUsers = await User.create({
-    //         firstname,
-    //         lastname,
-    //         email,
-    //         password,
-    //         phone,
-    //         dob,
-    //         gender,
-    //     });
-    // } catch (error) {
-    // }
-    // User.findAll({
-    //     where: {
-    //         role_id: 3,
-    //     },
-    // }).then((users) => {
-    //     res.status(200).json({
-    //         operators: users
-    //     })
-    // })
-    //     .catch((err) => {
-    //         res.status(500).json({
-    //             error: "An error occured during login!",
-    //         });
-    //     });
-    // res.status(200).json({
-    //     message: "create operators",
-    // });
+export const createOperators = async (req, res) => {
+    try {
+        const { firstname, lastname, email, password, phone, dob, gender } = req.body;
+
+        if (!firstname || !lastname || !email || !password || !phone || !dob || !gender) {
+            res.status(401).json({
+                message: "Invalid",
+            });
+        }
+
+        const operatorRole = await Role.findOne({ where: { role_id: 3 } });
+
+        if (!operatorRole) {
+            res.status(401).json({
+                message: "Operators roll not found!",
+            });
+        }
+
+        const newUsers = await User.create({
+            firstname,
+            lastname,
+            email,
+            password,
+            phone,
+            dob,
+            gender,
+            role_id: 3,
+        });
+
+        res.status(200).json({
+            message: "Create operators successfully!",
+            user: newUsers,
+        });
+    } catch (error) {
+        console.log(error);
+    }
 };
