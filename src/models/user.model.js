@@ -113,7 +113,7 @@ export const User = sequelize.define(
         },
         status: {
             type: DataTypes.ENUM("active", "deactive"),
-            defaultValue: "active",
+            defaultValue: "deactive",
         },
         role_id: {
             type: DataTypes.INTEGER, // Trường này không cần thiết phải khai báo nếu dùng `belongsTo`
