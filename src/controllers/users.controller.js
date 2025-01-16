@@ -1,3 +1,4 @@
+import verifyToken from "../middlewares/auth.js";
 import { User } from "../models/user.model.js";
 import { hashPassword } from "../utils/index.js";
 
