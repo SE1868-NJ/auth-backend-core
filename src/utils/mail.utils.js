@@ -4,8 +4,8 @@ import nodemailer from "nodemailer";
 const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-        user: "he186184tranxuanchien@gmail.com",
-        pass: "psnl rmpj tsqt koks",
+        user: "khuyen.dev183@gmail.com",
+        pass: "ulsh zrod lfmf vdgo",
     },
 });
 
@@ -14,7 +14,7 @@ export const sendEmail = async (mailInfo) => {
 
     try {
         const mailOptions = {
-            from: "he186184tranxuanchien@gmail.com",
+            from: "khuyen.dev183@gmail.com",
             to,
             subject,
             text,
