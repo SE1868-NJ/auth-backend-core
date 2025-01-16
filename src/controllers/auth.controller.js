@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import cryptoRandomString from "crypto-random-string";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config/config.js";
 import sequelize from "../config/sequelize.config.js";
@@ -165,15 +166,38 @@ export const verifyOtp = async (req, res) => {
     });
 };
 
-export const sendNewPassword = (req, res) => {
-    const { email } = req.body;
-    if (!email) {
-        res.status(400).json({ message: "Vui lòng cung cấp email." });
-    }
-
-    // Generate random password
-    const newPassword = cryptoRandomString({ length: 20, type: "alphanumeric" });
-
+export const resetPassword = async (req, res) => {
     try {
-    } catch (error) {}
+        const { email } = req.body;
+        if (!email) {
+            res.status(400).json({ message: "Vui lòng cung cấp email." });
+        }
+
+        // Generate random password
+        const newPassword = cryptoRandomString({ length: 8, type: "alphanumeric" });
+        const hashNewPassword = hashPassword(newPassword);
+
+        // send new password to the user
+        await sendEmail({
+            to: email,
+            subject: "Reset password",
+            text: `OTP code: ${newPassword}`,
+        });
+
+        // update database
+        await User.update(
+            { password: hashNewPassword },
+            {
+                where: { email: email },
+            },
+        );
+
+        res.status(200).json({
+            message: "Mật khẩu mới đã được gửi đến email của bạn",
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "An error occur during reset password",
+        });
+    }
 };
