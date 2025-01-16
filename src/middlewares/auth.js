@@ -1,30 +1,26 @@
 import jwt from "jsonwebtoken";
-const ACCESS_TOKEN_SECRET = "JWT";
+import { JWT_SECRET } from "../config/config.js";
 
 //next:call when token is valid -> go to next middleware -> next request handler
 const verifyToken = (req, res, next) => {
-    //lay header ra
-    const authHeader = req.header("Authorization");
+    const token = req.headers.authorization?.split(" ")[1];
 
-    //lay cai token ra (tach tu Bearer)
-    //kiem tra xem co token ko, neu co thi tach ra
-    const token = authHeader?.split(" ")[1];
-
-    //neu ko co token, nguoi dung ko co quyen truy cap
     if (!token) {
-        return res.sendStatus(401); //unauthorized
+        return res.status(401).json({
+            message: "Unauthorized!",
+        });
     }
 
-    //verify token
-    try {
-        const userDecoded = jwt.verify(token, ACCESS_TOKEN_SECRET);
-
-        req.id = userDecoded.id; //luu userid vao reqid
-        next(); //da verify thanh cong -> next middleware
-    } catch (error) {
-        console.log(error);
-        return res.sendStatus(403); //forbidden
-    }
+    jwt.verify(token, JWT_SECRET, (err, decoded) => {
+        if (err) {
+            if (err.name === "TokenExpiredError") {
+                return res.status(401).json({ message: "Token has expired" });
+            }
+            return res.status(403).json({ message: "Invalid token!" });
+        }
+        req.user = decoded;
+        next();
+    });
 };
 
 export default verifyToken;

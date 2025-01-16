@@ -8,6 +8,12 @@ import { User } from "../models/user.model.js";
 import { hashPassword } from "../utils/index.js";
 import { sendEmail } from "../utils/mail.utils.js";
 
+export const getSession = (req, res) => {
+    res.status(200).json({
+        message: "Authenticated!",
+    });
+};
+
 export const login = (req, res) => {
     // get email, password from user through request.body
     const { email, password } = req.body;
