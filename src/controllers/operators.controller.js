@@ -1,5 +1,6 @@
 import { Role } from "../models/role.model.js";
 import { User } from "../models/user.model.js";
+import { hashPassword } from "../utils/index.js";
 
 export const getOperators = (req, res) => {
     User.findAll({
@@ -41,7 +42,7 @@ export const createOperators = async (req, res) => {
             firstname,
             lastname,
             email,
-            password,
+            password: hashPassword(password),
             phone,
             dob,
             gender,

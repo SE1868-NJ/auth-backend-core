@@ -8,5 +8,4 @@ operatorsRouter.post("/create", createOperators);
 operatorsRouter.patch("/update/:id", updateUser);
 operatorsRouter.get("/", getOperators);
 
-
 export default operatorsRouter;
