@@ -9,8 +9,6 @@ import { hashPassword } from "../utils/index.js";
 import { sendEmail } from "../utils/mail.utils.js";
 
 export const login = (req, res) => {
-    console.log("123");
-
     // get email, password from user through request.body
     const { email, password } = req.body;
 
@@ -70,8 +68,6 @@ export const register = async (req, res) => {
             const role_default = await Role.findOne({
                 where: { role_name: "CUSTOMER" },
             });
-
-            console.log(role_default.role_id);
 
             // Create the user
             const user = await User.create({
