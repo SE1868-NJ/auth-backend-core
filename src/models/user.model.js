@@ -15,11 +15,11 @@ export const User = sequelize.define(
             allowNull: true,
             validate: {
                 isAlphanumeric: {
-                    msg: "Google ID chỉ chứa các ký tự và số.",
+                    msg: "Google ID contains only letters and numbers.",
                 },
                 len: {
                     args: [1, 255],
-                    msg: "Google ID phải có độ dài từ 1 đến 255 ký tự.",
+                    msg: "Google ID must be between 1 and 255 characters in length.",
                 },
             },
         },
@@ -31,11 +31,11 @@ export const User = sequelize.define(
 
             validate: {
                 isEmail: {
-                    msg: "Email không hợp lệ.",
+                    msg: "Invalid email.",
                 },
                 len: {
                     args: [5, 255],
-                    msg: "Email phải có độ dài từ 5 đến 255 ký tự.",
+                    msg: "Email must be between 5 and 255 characters in length.",
                 },
             },
         },
@@ -45,7 +45,7 @@ export const User = sequelize.define(
             validate: {
                 len: {
                     args: [6, 255],
-                    msg: "Mật khẩu phải có ít nhất 6 ký tự.",
+                    msg: "Password must be at least 6 characters long.",
                 },
             },
         },
@@ -54,11 +54,11 @@ export const User = sequelize.define(
             allowNull: false,
             validate: {
                 isNumeric: {
-                    msg: "Số điện thoại phải chỉ chứa các số.",
+                    msg: "Phone number must contain only numbers.",
                 },
                 len: {
                     args: [10, 15],
-                    msg: "Số điện thoại phải có độ dài từ 10 đến 15 ký tự.",
+                    msg: "Phone number must be between 10 and 15 characters in length.",
                 },
             },
         },
@@ -69,7 +69,7 @@ export const User = sequelize.define(
             validate: {
                 len: {
                     args: [1, 100],
-                    msg: "Họ phải có độ dài từ 1 đến 100 ký tự.",
+                    msg: "Last name must be between 1 and 100 characters in length.",
                 },
             },
         },
@@ -80,7 +80,7 @@ export const User = sequelize.define(
             validate: {
                 len: {
                     args: [1, 100],
-                    msg: "Họ phải có độ dài từ 1 đến 100 ký tự.",
+                    msg: "First name must be between 1 and 100 characters in length.",
                 },
             },
         },
@@ -91,11 +91,11 @@ export const User = sequelize.define(
 
             validate: {
                 isDate: {
-                    msg: "Ngày sinh phải là một định dạng ngày hợp lệ.",
+                    msg: "Date of birth must be a valid date format.",
                 },
                 isBefore: {
                     args: new Date().toISOString().split("T")[0], // Kiểm tra ngày trước hôm nay
-                    msg: "Ngày sinh phải là một ngày trước ngày hiện tại.",
+                    msg: "Date of birth must be a date before the current date.",
                 },
             },
         },
@@ -107,7 +107,7 @@ export const User = sequelize.define(
             validate: {
                 isIn: {
                     args: [["male", "female", "other"]],
-                    msg: "Giới tính phải là male, female hoặc other.",
+                    msg: "Gender must be male, female, or other.",
                 },
             },
         },
