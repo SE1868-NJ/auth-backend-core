@@ -1,4 +1,3 @@
-
 import bcrypt from "bcryptjs";
 import cryptoRandomString from "crypto-random-string";
 import jwt from "jsonwebtoken";
@@ -111,7 +110,7 @@ export const sendOtp = async (req, res) => {
     const { email } = req.body;
 
     if (!email) {
-        return res.status(400).json({ message: "Vui lòng cung cấp email." });
+        return res.status(400).json({ message: "Please provide an email." });
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString(); // Tạo OTP
@@ -127,9 +126,9 @@ export const sendOtp = async (req, res) => {
             subject: "Verify your account",
             text: `OTP code: ${otp}`,
         }); // Hàm gửi email từ Nodemailer
-        res.status(200).json({ message: "OTP đã được gửi tới email của bạn." });
+        res.status(200).json({ message: "An OTP has been sent to your email." });
     } catch (error) {
-        res.status(500).json({ message: "Không thể gửi OTP. Vui lòng thử lại." });
+        res.status(500).json({ message: "Unable to send OTP. Please try again." });
     }
 };
 
@@ -137,7 +136,7 @@ export const verifyOtp = async (req, res) => {
     const { email, otp } = req.body;
 
     if (!email || !otp) {
-        return res.status(400).json({ message: "Vui lòng cung cấp email và OTP." });
+        return res.status(400).json({ message: "Please provide your email and OTP." });
     }
 
     const storedOtp = otpStore.get(email);
@@ -145,12 +144,12 @@ export const verifyOtp = async (req, res) => {
     // Kiểm tra OTP và thời gian hết hạn
     if (!storedOtp || storedOtp.otp !== otp) {
         return res.status(400).json({
-            message: "OTP không hợp lệ.",
+            message: "Invalid OTP.",
         });
     }
 
     if (Date.now() > storedOtp.expiresAt) {
-        return res.status(400).json({ message: "OTP đã hết hạn." });
+        return res.status(400).json({ message: "OTP has expired." });
     }
 
     // Xác thực thành công: Cập nhật trạng thái tài khoản
@@ -163,7 +162,7 @@ export const verifyOtp = async (req, res) => {
 
     otpStore.delete(email); // Xóa OTP khỏi bộ nhớ
     res.status(200).json({
-        message: "Xác thực OTP thành công, tài khoản của bạn đã được kích hoạt!",
+        message: "OTP verification successful, your account has been activated!",
     });
 };
 
@@ -171,7 +170,7 @@ export const resetPassword = async (req, res) => {
     try {
         const { email } = req.body;
         if (!email) {
-            res.status(400).json({ message: "Vui lòng cung cấp email." });
+            res.status(400).json({ message: "Please provide your email." });
         }
 
         // Generate random password
@@ -194,7 +193,7 @@ export const resetPassword = async (req, res) => {
         );
 
         res.status(200).json({
-            message: "Mật khẩu mới đã được gửi đến email của bạn",
+            message: "A new password has been sent to your email.",
         });
     } catch (error) {
         res.status(500).json({
