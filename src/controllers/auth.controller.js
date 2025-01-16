@@ -94,8 +94,9 @@ export const register = async (req, res) => {
                 message: "Register successfully!",
             });
         } else {
-            res.status(400).json({
-                code: 400,
+            res.status(409).json({
+                // Mã lỗi tài khoản đã tồn tại
+                code: 409,
                 message: "This email has already been used to register another account.",
             });
         }
