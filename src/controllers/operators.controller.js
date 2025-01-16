@@ -60,10 +60,9 @@ export const createOperators = async (req, res) => {
 export const updateUser = async (req, res) => {
     try {
         const { id } = req.params;
-        const fieldToUpdate = req.body;
-        console.log("fieldToUpdate: ", fieldToUpdate);
+        const fieldsToUpdate = req.body;
 
-        if (Object.keys(fieldToUpdate).length === 0) {
+        if (Object.keys(fieldsToUpdate).length === 0) {
             return res.status(400).json({
                 error: "No field to update",
             });
@@ -78,7 +77,7 @@ export const updateUser = async (req, res) => {
             }
 
             try {
-                const updatedUser = await User.update(fieldToUpdate, {
+                const updatedUser = await User.update(fieldsToUpdate, {
                     where: {
                         id: req.id,
                     },
