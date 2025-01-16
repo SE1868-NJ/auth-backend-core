@@ -3,7 +3,6 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
 import morgan from "morgan";
-import db from "./models/index.js";
 import route from "./routes/index.js";
 
 const app = express();
