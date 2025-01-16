@@ -36,7 +36,7 @@ export const login = (req, res) => {
             if (isValid) {
                 const accessToken = jwt.sign(
                     {
-                        userInfo: "userInfo",
+                        email: email,
                     },
                     JWT_SECRET,
                 );
@@ -76,7 +76,7 @@ export const register = async (req, res) => {
             });
 
             // Create the user
-            const user = await User.create({
+            await User.create({
                 email,
                 password: hashedPassword,
                 phone,
@@ -85,6 +85,8 @@ export const register = async (req, res) => {
                 dob,
                 gender,
                 role_id: role_default.role_id,
+            }).then(async () => {
+                await sendOtp(email);
             });
 
             await transaction.commit();
@@ -109,11 +111,10 @@ export const register = async (req, res) => {
 };
 
 const otpStore = new Map(); // Bộ nhớ tạm thời lưu OTP
-export const sendOtp = async (req, res) => {
-    const { email } = req.body;
-
+export const sendOtp = async (email) => {
     if (!email) {
-        return res.status(400).json({ message: "Please provide an email." });
+        console.log("Please provide an email!");
+        return;
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString(); // Tạo OTP
@@ -129,9 +130,8 @@ export const sendOtp = async (req, res) => {
             subject: "Verify your account",
             text: `OTP code: ${otp}`,
         }); // Hàm gửi email từ Nodemailer
-        res.status(200).json({ message: "An OTP has been sent to your email." });
     } catch (error) {
-        res.status(500).json({ message: "Unable to send OTP. Please try again." });
+        console.log(error);
     }
 };
 
