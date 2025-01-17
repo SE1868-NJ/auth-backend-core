@@ -60,7 +60,7 @@ export const createOperators = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { user_id } = req.body;
         const fieldsToUpdate = req.body;
 
         if (Object.keys(fieldsToUpdate).length === 0) {
@@ -70,7 +70,7 @@ export const updateUser = async (req, res) => {
         }
 
         try {
-            const user = User.findByPk(id);
+            const user = await User.findByPk(user_id);
             if (!user) {
                 return res.status(404).json({
                     error: "User not found!",
@@ -80,7 +80,7 @@ export const updateUser = async (req, res) => {
             try {
                 const updatedUser = await User.update(fieldsToUpdate, {
                     where: {
-                        id: req.id,
+                        user_id: user_id,
                     },
                 }).then((user) => {
                     res.status(200).json({
