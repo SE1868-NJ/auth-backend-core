@@ -62,7 +62,6 @@ export const updateUser = async (req, res) => {
     try {
         const { id } = req.params;
         const fieldsToUpdate = req.body;
-        console.log(id);
 
         if (Object.keys(fieldsToUpdate).length === 0) {
             return res.status(400).json({
