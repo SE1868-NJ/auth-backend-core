@@ -70,7 +70,7 @@ export const updateUser = async (req, res) => {
         }
 
         try {
-            const user = User.findByPk(id);
+            const user = await User.findByPk(id);
             if (!user) {
                 return res.status(404).json({
                     error: "User not found!",
@@ -80,7 +80,7 @@ export const updateUser = async (req, res) => {
             try {
                 const updatedUser = await User.update(fieldsToUpdate, {
                     where: {
-                        id: req.id,
+                        user_id: id,
                     },
                 }).then((user) => {
                     res.status(200).json({
