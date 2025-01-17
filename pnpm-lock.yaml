@@ -14,9 +14,12 @@ importers:
       '@sequelize/postgres':
         specifier: 7.0.0-alpha.43
         version: 7.0.0-alpha.43
+<<<<<<< HEAD
+=======
       bcryptjs:
         specifier: ^2.4.3
         version: 2.4.3
+>>>>>>> 049e647d29cb2e73be206627f6abf9434eac77ad
       body-parser:
         specifier: ^1.20.3
         version: 1.20.3
@@ -58,7 +61,11 @@ importers:
         version: 2.3.4
       sequelize:
         specifier: ^6.37.5
+<<<<<<< HEAD
+        version: 6.37.5(mysql2@3.12.0)(pg@8.13.1)
+=======
         version: 6.37.5(mysql2@3.12.0)(pg-hstore@2.3.4)(pg@8.13.1)
+>>>>>>> 049e647d29cb2e73be206627f6abf9434eac77ad
       sequelize-cli:
         specifier: ^6.6.2
         version: 6.6.2
@@ -1295,10 +1302,13 @@ packages:
     resolution: {integrity: sha512-r0eojU4bI8MnHr8c5bNo7lJDdI2qXlWWJk6a9EAFG7vbhTjElYhBVS3/miuE0uOuoLdb8Mc/rVfsmm6eo5o9GA==}
     hasBin: true
 
+<<<<<<< HEAD
+=======
   type-fest@2.19.0:
     resolution: {integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==}
     engines: {node: '>=12.20'}
 
+>>>>>>> 049e647d29cb2e73be206627f6abf9434eac77ad
   type-fest@4.32.0:
     resolution: {integrity: sha512-rfgpoi08xagF3JSdtJlCwMq9DGNDE0IMh3Mkpc1wUypg9vPi786AiqeBBKcqvIkq42azsBM85N490fyZjeUftw==}
     engines: {node: '>=16'}
@@ -2506,7 +2516,11 @@ snapshots:
 
   sequelize-pool@8.0.0: {}
 
+<<<<<<< HEAD
+  sequelize@6.37.5(mysql2@3.12.0)(pg@8.13.1):
+=======
   sequelize@6.37.5(mysql2@3.12.0)(pg-hstore@2.3.4)(pg@8.13.1):
+>>>>>>> 049e647d29cb2e73be206627f6abf9434eac77ad
     dependencies:
       '@types/debug': 4.1.12
       '@types/validator': 13.12.2
@@ -2527,7 +2541,10 @@ snapshots:
     optionalDependencies:
       mysql2: 3.12.0
       pg: 8.13.1
+<<<<<<< HEAD
+=======
       pg-hstore: 2.3.4
+>>>>>>> 049e647d29cb2e73be206627f6abf9434eac77ad
     transitivePeerDependencies:
       - supports-color
 
@@ -2649,8 +2666,11 @@ snapshots:
 
   touch@3.1.1: {}
 
+<<<<<<< HEAD
+=======
   type-fest@2.19.0: {}
 
+>>>>>>> 049e647d29cb2e73be206627f6abf9434eac77ad
   type-fest@4.32.0: {}
 
   type-is@1.6.18:
