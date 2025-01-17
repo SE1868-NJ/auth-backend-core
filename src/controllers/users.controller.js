@@ -1,4 +1,3 @@
-import verifyToken from "../middlewares/auth.js";
 import { User } from "../models/user.model.js";
 import { hashPassword } from "../utils/index.js";
 
@@ -9,6 +8,7 @@ export const changePassword = async (req, res) => {
         // Validate input
         if (!userId || !password || !newPassword) {
             return res.status(400).json({
+                errorCode: 1,
                 message: "Missing userId, password, or newPassword!",
             });
         }
@@ -18,6 +18,7 @@ export const changePassword = async (req, res) => {
 
         if (!user) {
             return res.status(404).json({
+                errorCode: 2,
                 message: "User not found!",
             });
         }
@@ -25,6 +26,7 @@ export const changePassword = async (req, res) => {
         // Validate current password
         if (user.password !== hashPassword(password)) {
             return res.status(401).json({
+                errorCode: 3,
                 message: "Invalid current password!",
             });
         }
@@ -34,11 +36,13 @@ export const changePassword = async (req, res) => {
         await user.save();
 
         return res.status(200).json({
+            errorCode: 0,
             message: "Password changed successfully!",
         });
     } catch (error) {
         console.error("Error changing password:", error);
         return res.status(500).json({
+            errorCode: 4,
             message: "An error occurred while changing the password.",
             error: error.message,
         });
