@@ -30,7 +30,7 @@ export const changePassword = async (req, res) => {
                 message: "Invalid current password!",
             });
         }
-
+        
         // Update password
         user.password = hashPassword(newPassword);
         await user.save();

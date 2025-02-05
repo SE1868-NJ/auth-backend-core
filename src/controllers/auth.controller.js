@@ -32,7 +32,6 @@ export const login = (req, res) => {
             const isValid = users.some(
                 (user) => user.email === email && bcrypt.compareSync(password, user.password),
             );
-
             if (isValid) {
                 const accessToken = jwt.sign(
                     {
