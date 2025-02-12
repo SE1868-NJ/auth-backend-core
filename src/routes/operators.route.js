@@ -5,6 +5,7 @@ import { createOperators, getOperators, updateUser } from "../controllers/operat
 const operatorsRouter = express.Router();
 
 operatorsRouter.post("/create", createOperators);
+
 operatorsRouter.patch("/update/:id", updateUser);
 operatorsRouter.get("/", getOperators);
 

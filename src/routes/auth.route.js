@@ -12,7 +12,7 @@ import verifyToken from "../middlewares/auth.js";
 const authRouter = express.Router();
 
 // /api/v1/auth/login
-authRouter.post("/login", login);
+authRouter.post("/login/:role", login);
 authRouter.post("/register", register);
 authRouter.post("/send-otp", sendOtp);
 authRouter.post("/verify-otp", verifyOtp);

@@ -9,7 +9,8 @@
         "start": "nodemon src/app.js",
         "prepare": "husky",
         "check:fix": "biome check . --write",
-        "migrate": "node src/migrate.js"
+        "migrate": "node src/migrate.js",
+        "insert": "node src/insertData.js"
     },
     "lint-staged": {
         "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": ["pnpm check:fix"]
@@ -25,6 +26,7 @@
     "dependencies": {
         "@commitlint/config-conventional": "^19.6.0",
         "@sequelize/postgres": "7.0.0-alpha.43",
+        "bcrypt": "^5.1.1",
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.20.3",
         "cors": "^2.8.5",
