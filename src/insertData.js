@@ -12,7 +12,7 @@ const insertOperators = async () => {
             {
                 operatorName: "Alice Smith",
                 mail: "alice.smith@example.com",
-                password: "securePass456",
+                password: "securePass456!",
             },
             {
                 operatorName: "Bob Johnson",
