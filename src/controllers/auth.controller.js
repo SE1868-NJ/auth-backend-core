@@ -5,6 +5,8 @@ import { JWT_SECRET } from "../config/config.js";
 import sequelize from "../config/sequelize.config.js";
 import { Role } from "../models/role.model.js";
 import { User } from "../models/user.model.js";
+import OperatorServices from "../services/operator.service.js";
+import UserServices from "../services/user.service.js";
 import { hashPassword } from "../utils/index.js";
 import { sendEmail } from "../utils/mail.utils.js";
 
@@ -14,45 +16,46 @@ export const getSession = (req, res) => {
     });
 };
 
-export const login = (req, res) => {
-    // get email, password from user through request.body
-    const { email, password } = req.body;
+export const login = async (req, res) => {
+    try {
+        // Extract email and password from the request body
+        const { email, password } = req.body;
+        // Extract role from request parameters (e.g., "/login/operator" or "/login/user")
+        const { role } = req.params;
 
-    if (!email || !password) {
-        res.status(401).json({
-            message: "Invalid email, password!",
-        });
+        // Validate that email and password are provided
+        if (!email || !password) {
+            return res.status(400).json({ message: "Email and password are required!" });
+        }
+
+        let user = null; // Initialize user variable to store authentication result
+
+        // Check user credentials based on role
+        if (role === "operator") {
+            user = await OperatorServices.checkOPerator(email, password);
+        } else if (role === "user") {
+            user = await UserServices.checkUser(email, password);
+        } else {
+            // Return error if an invalid role is provided
+            return res.status(400).json({ message: "Invalid role specified!" });
+        }
+
+        // If user authentication fails, return an error response
+        if (!user) {
+            return res.status(401).json({ message: "Invalid email or password!" });
+        }
+
+        // Generate JWT token with user email and role, valid for 1 hour
+        const accessToken = jwt.sign({ email, role }, JWT_SECRET, { expiresIn: "1h" });
+
+        // Return the generated token in the response
+        return res.status(200).json({ token: accessToken });
+    } catch (error) {
+        // Log the error to the server console for debugging
+        console.error("Login Error:", error);
+        // Return a generic error response to avoid exposing sensitive details
+        return res.status(500).json({ message: "Internal Server Error" });
     }
-
-    // get all users from db
-    User.findAll()
-        .then((users) => {
-            // check user valid or not
-
-            const isValid = users.some(
-                (user) => user.email === email && bcrypt.compareSync(password, user.password),
-            );
-            if (isValid) {
-                const accessToken = jwt.sign(
-                    {
-                        email: email,
-                    },
-                    JWT_SECRET,
-                );
-                res.status(200).json({
-                    token: accessToken,
-                });
-            } else {
-                res.status(401).json({
-                    message: "Invalid email, password!",
-                });
-            }
-        })
-        .catch((err) => {
-            res.status(500).json({
-                error: "An error occured during login!",
-            });
-        });
 };
 
 export const register = async (req, res) => {
