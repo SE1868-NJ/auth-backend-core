@@ -50,4 +50,41 @@ const insertOperators = async () => {
     }
 };
 
-insertOperators();
+const insertOperators2 = async () => {
+    console.log("insertOperators started");
+    await new Promise((resolve) =>
+        setTimeout(() => {
+            console.log("insertOperators finished");
+            resolve();
+        }, 1000),
+    );
+};
+
+const insert2 = async () => {
+    console.log("insert2 started");
+    await new Promise((resolve) =>
+        setTimeout(() => {
+            console.log("insert2 finished");
+            resolve();
+        }, 1000),
+    );
+};
+
+const insert3 = async () => {
+    console.log("insert3 started");
+    await new Promise((resolve) =>
+        setTimeout(() => {
+            console.log("insert3 finished");
+            resolve();
+        }, 1000),
+    );
+};
+
+const insert = async () => {
+    await insertOperators2();
+    await insert2();
+    await insert3();
+    console.log("insert started----------");
+};
+
+insert();
