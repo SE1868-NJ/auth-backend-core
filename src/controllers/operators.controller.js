@@ -1,12 +1,11 @@
+import { Operator } from "../models/operator.model.js";
 import { Role } from "../models/role.model.js";
 import { User } from "../models/user.model.js";
 import { hashPassword } from "../utils/index.js";
 
 export const getOperators = (req, res) => {
-    User.findAll({
-        where: {
-            role_id: 3,
-        },
+    Operator.findAll({
+        where: {},
     })
         .then((users) => {
             res.status(200).json({
