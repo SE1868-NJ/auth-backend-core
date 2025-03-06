@@ -4,6 +4,6 @@ import verifyToken from "../middlewares/auth.js";
 
 const usersRouter = express.Router();
 
-usersRouter.post("/changePassword", verifyToken, changePassword);
+usersRouter.post("/changePassword/:role", verifyToken, changePassword);
 
 export default usersRouter;

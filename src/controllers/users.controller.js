@@ -1,9 +1,12 @@
+import bcrypt from "bcrypt";
+import { Operator } from "../models/operator.model.js";
 import { User } from "../models/user.model.js";
 import { hashPassword } from "../utils/index.js";
 
 export const changePassword = async (req, res) => {
     try {
         const { userId, password, newPassword } = req.body;
+        const { role } = req.params;
 
         // Validate input
         if (!userId || !password || !newPassword) {
@@ -13,8 +16,14 @@ export const changePassword = async (req, res) => {
             });
         }
 
+        let user = null;
+
         // Find user by ID
-        const user = await User.findOne({ where: { user_id: userId } });
+        if (role === "user") {
+            user = await User.findOne({ where: { user_id: userId } });
+        } else if (role === "operator") {
+            user = await Operator.findOne({ where: { operatorID: userId } });
+        }
 
         if (!user) {
             return res.status(404).json({
@@ -24,13 +33,16 @@ export const changePassword = async (req, res) => {
         }
 
         // Validate current password
-        if (user.password !== hashPassword(password)) {
+        const isMatch = await bcrypt.compare(password, user.password);
+        console.log(password);
+        console.log(user);
+        if (!isMatch) {
             return res.status(401).json({
                 errorCode: 3,
                 message: "Invalid current password!",
             });
         }
-        
+
         // Update password
         user.password = hashPassword(newPassword);
         await user.save();

@@ -23,6 +23,7 @@ export const login = async (req, res) => {
         // Extract role from request parameters (e.g., "/login/operator" or "/login/user")
         const { role } = req.params;
 
+        console.log("role", role);
         // Validate that email and password are provided
         if (!email || !password) {
             return res.status(400).json({ message: "Email and password are required!" });
@@ -39,6 +40,7 @@ export const login = async (req, res) => {
             // Return error if an invalid role is provided
             return res.status(400).json({ message: "Invalid role specified!" });
         }
+        console.log(user);
 
         // If user authentication fails, return an error response
         if (!user) {
