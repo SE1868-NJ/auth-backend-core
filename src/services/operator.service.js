@@ -8,11 +8,11 @@ const OperatorServices = {
                 where: { mail },
             });
             if (!operator) {
-                return { error: "Invalid credentials" };
+                return null;
             }
             const validPassword = await bcrypt.compare(password, operator.password);
             if (!validPassword) {
-                return { error: "Invalid credentials" };
+                return null;
             }
             return operator;
         } catch (error) {
