@@ -34,8 +34,6 @@ export const changePassword = async (req, res) => {
 
         // Validate current password
         const isMatch = await bcrypt.compare(password, user.password);
-        console.log(password);
-        console.log(user);
         if (!isMatch) {
             return res.status(401).json({
                 errorCode: 3,
