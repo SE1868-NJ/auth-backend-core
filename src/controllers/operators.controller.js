@@ -1,6 +1,6 @@
+import { Admin } from "../models/admin.model.js";
 import { Operator } from "../models/operator.model.js";
 import { Role } from "../models/role.model.js";
-import { User } from "../models/user.model.js";
 import { hashPassword } from "../utils/index.js";
 
 export const getOperators = (req, res) => {
@@ -24,20 +24,16 @@ export const createOperators = async (req, res) => {
         const { firstname, lastname, email, password, phone, dob, gender } = req.body;
 
         if (!firstname || !lastname || !email || !password || !phone || !dob || !gender) {
-            res.status(401).json({
-                message: "Invalid",
-            });
+            return res.status(400).json({ message: "All fields are required." });
         }
 
         const operatorRole = await Role.findOne({ where: { role_id: 3 } });
 
         if (!operatorRole) {
-            res.status(401).json({
-                message: "Operators roll not found!",
-            });
+            return res.status(404).json({ message: "Operator role not found!" });
         }
 
-        const newUsers = await User.create({
+        const newUser = await Admin.create({
             firstname,
             lastname,
             email,
@@ -45,15 +41,15 @@ export const createOperators = async (req, res) => {
             phone,
             dob,
             gender,
-            role_id: 3,
         });
 
-        res.status(200).json({
-            message: "Create operators successfully!",
-            user: newUsers,
+        return res.status(201).json({
+            message: "Operator created successfully!",
+            user: newUser,
         });
     } catch (error) {
-        console.log(error);
+        console.error("Error creating operator:", error);
+        return res.status(500).json({ message: "Internal server error" });
     }
 };
 
@@ -69,7 +65,7 @@ export const updateUser = async (req, res) => {
         }
 
         try {
-            const user = await User.findByPk(id);
+            const user = await Admin.findByPk(id);
             if (!user) {
                 return res.status(404).json({
                     error: "User not found!",
@@ -77,7 +73,7 @@ export const updateUser = async (req, res) => {
             }
 
             try {
-                const updatedUser = await User.update(fieldsToUpdate, {
+                const updatedUser = await Admin.update(fieldsToUpdate, {
                     where: {
                         user_id: id,
                     },
