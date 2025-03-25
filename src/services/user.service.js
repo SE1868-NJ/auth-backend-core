@@ -1,10 +1,10 @@
 import bcrypt from "bcrypt";
-import { User } from "../models/user.model.js";
+import { Admin } from "../models/admin.model.js";
 
 const UserServices = {
     async checkUser(email, password) {
         try {
-            const user = await User.findOne({
+            const user = await Admin.findOne({
                 where: { email },
             });
             if (!user) {

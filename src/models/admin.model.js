@@ -1,8 +1,8 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/sequelize.config.js";
 
-export const User = sequelize.define(
-    "User",
+export const Admin = sequelize.define(
+    "Admin",
     {
         user_id: {
             type: DataTypes.INTEGER,
@@ -115,23 +115,12 @@ export const User = sequelize.define(
             type: DataTypes.ENUM("active", "deactive"),
             defaultValue: "deactive",
         },
-        role_id: {
-            type: DataTypes.INTEGER, // Trường này không cần thiết phải khai báo nếu dùng `belongsTo`
-        },
     },
     {
-        tableName: "users",
+        tableName: "admins",
     },
 );
 
-// Định nghĩa mối quan hệ
-User.associate = (models) => {
-    User.belongsTo(models.Role, {
-        foreignKey: "role_id", // Trường khóa ngoại trong bảng `User`
-        as: "role", // Bí danh để truy vấn
-    });
-};
-
 export default (sequelize, DataTypes) => {
-    return User;
+    return Admin;
 };

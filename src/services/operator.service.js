@@ -2,10 +2,10 @@ import bcrypt from "bcrypt";
 import { Operator } from "../models/operator.model.js";
 
 const OperatorServices = {
-    async checkOPerator(mail, password) {
+    async checkOPerator(email, password) {
         try {
             const operator = await Operator.findOne({
-                where: { mail },
+                where: { email },
             });
             if (!operator) {
                 return null;
