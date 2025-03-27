@@ -13,7 +13,7 @@ const files = readdirSync(__dirname).filter((file) => file.endsWith(".js") && fi
 for (const file of files) {
     const modelPath = pathToFileURL(path.join(__dirname, file)).href; // Convert to file:// URL
     const { default: modelDefiner } = await import(modelPath);
-    const model = modelDefiner();
+    const model = modelDefiner;
 
     db[model.name] = model;
 }

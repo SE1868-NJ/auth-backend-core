@@ -1,4 +1,3 @@
-import bcrypt from "bcryptjs";
 import cryptoRandomString from "crypto-random-string";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config/config.js";
@@ -34,7 +33,7 @@ export const login = async (req, res) => {
 
         // Check user credentials based on role
         if (role === "operator") {
-            user = await OperatorServices.checkOPerator(email, password);
+            user = await OperatorServices.checkOperator(email, password);
         } else if (role === "user") {
             user = await UserServices.checkUser(email, password);
         } else {

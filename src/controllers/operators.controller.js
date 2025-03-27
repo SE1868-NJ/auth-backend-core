@@ -1,7 +1,11 @@
+
 import { Admin } from "../models/admin.model.js";
 import { Operator } from "../models/operator.model.js";
 import { Role } from "../models/role.model.js";
+import OperatorServices from "../services/operator.service.js";
 import { hashPassword } from "../utils/index.js";
+import { sendEmail } from "../utils/mail.utils.js";
+import bcrypt from "bcrypt";
 
 export const getOperators = (req, res) => {
     Operator.findAll({
@@ -21,32 +25,53 @@ export const getOperators = (req, res) => {
 
 export const createOperators = async (req, res) => {
     try {
-        const { firstname, lastname, email, password, phone, dob, gender } = req.body;
+        const { firstName, lastName, personalEmail, email, phoneNumber, dateOfBirth, gender, roleCode } = req.body;
+        console.log(firstName, lastName, personalEmail, email, phoneNumber, dateOfBirth, gender, roleCode);
 
-        if (!firstname || !lastname || !email || !password || !phone || !dob || !gender) {
-            return res.status(400).json({ message: "All fields are required." });
+        if (!firstName || !lastName || !email || !phoneNumber || !dateOfBirth || !gender) {
+            return res.status(400).json({ message: "Vui lòng điền đầy đủ thông tin!" });
         }
 
-        const operatorRole = await Role.findOne({ where: { role_id: 3 } });
+        const existingOperator = await Operator.findOne({ where: { email } });
 
-        if (!operatorRole) {
+        if (!existingOperator) {
             return res.status(404).json({ message: "Operator role not found!" });
         }
 
-        const newUser = await Admin.create({
-            firstname,
-            lastname,
+        const generatePassword = (length = 12) => {
+            const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
+            return Array.from({ length }, () => charset[Math.floor(Math.random() * charset.length)]).join('');
+        };
+
+        const plainPassword = generatePassword(); // Generate password
+        const hashedPassword = await bcrypt.hash(plainPassword, 10); // Hash password securely
+
+        const newOperator = await Operator.create({
+            firstName,
+            lastName,
+            personalEmail,
             email,
-            password: hashPassword(password),
-            phone,
-            dob,
-            gender,
+            password: hashedPassword,
+            phoneNumber,
+            dateOfBirth,
+            gender
         });
+
+        sendEmail(
+            {
+                to: personalEmail,
+                subject: "Thông tin đăng ký tài khoản",
+                text:
+                    `Email Operator: ${email} \nMật khẩu:  ${plainPassword}`,
+            }
+        );
 
         return res.status(201).json({
             message: "Operator created successfully!",
             user: newUser,
         });
+
+
     } catch (error) {
         console.error("Error creating operator:", error);
         return res.status(500).json({ message: "Internal server error" });
@@ -97,5 +122,30 @@ export const updateUser = async (req, res) => {
         return res.status(500).json({
             error: `Request not found! ${error}.`,
         });
+    }
+};
+
+
+export const getOperatorsList = async (req, res) => {
+    try {
+        const operators = await OperatorServices.getAllOperators();
+        res.status(200).json({ success: true, data: operators });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+export const getOperatorById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const operator = await OperatorServices.getOperatorById(id);
+
+        if (!operator) {
+            return res.status(404).json({ success: false, message: "Operator not found" });
+        }
+
+        res.status(200).json({ success: true, data: operator });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Error fetching operator", error: error.message });
     }
 };
