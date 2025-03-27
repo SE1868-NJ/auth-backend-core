@@ -79,10 +79,6 @@ export const Operator = sequelize.define("Operator", {
         allowNull: false,
         defaultValue: "pending",
     },
-    roleCode: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-    },
 });
 
 export default (sequelize, DataTypes) => {

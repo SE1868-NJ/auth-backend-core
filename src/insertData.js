@@ -9,34 +9,13 @@ const insertOperators = async () => {
                 firstName: "Nguyễn",
                 lastName: "Văn A",
                 email: "operator@gmail.com",
+                personalEmail: "abc@gmail.com",
                 password: "12345",
                 phoneNumber: "0987654321",
                 dateOfBirth: "1990-05-20",
                 gender: "male",
                 status: "active",
                 roleCode: 1,
-            },
-            {
-                firstName: "Trần",
-                lastName: "Thị B",
-                email: "tranthib@example.com",
-                password: "hashedpassword2",
-                phoneNumber: "0976543210",
-                dateOfBirth: "1995-09-15",
-                gender: "female",
-                status: "active",
-                roleCode: 2,
-            },
-            {
-                firstName: "Lê",
-                lastName: "Minh C",
-                email: "leminhc@example.com",
-                password: "hashedpassword3",
-                phoneNumber: "0965432109",
-                dateOfBirth: "1988-12-10",
-                gender: "other",
-                status: "inactive",
-                roleCode: 3,
             },
         ];
         // Hash passwords
@@ -85,7 +64,7 @@ const insertAdmins = async () => {
 const insert = async () => {
     console.log("insert started----------");
     await insertOperators();
-    await insertAdmins();
+    // await insertAdmins();
 };
 
 insert();

@@ -29,13 +29,13 @@ export const createOperators = async (req, res) => {
         console.log(firstName, lastName, personalEmail, email, phoneNumber, dateOfBirth, gender, roleCode);
 
         if (!firstName || !lastName || !email || !phoneNumber || !dateOfBirth || !gender) {
-            return res.status(400).json({ message: "Vui lòng điền đầy đủ thông tin!" });
+            return res.status(400).json({ message: "All fields are required!" });
         }
 
         const existingOperator = await Operator.findOne({ where: { email } });
 
-        if (!existingOperator) {
-            return res.status(404).json({ message: "Operator role not found!" });
+        if (existingOperator) {
+            return res.status(404).json({ message: "Operator is existed!" });
         }
 
         const generatePassword = (length = 12) => {
@@ -68,7 +68,7 @@ export const createOperators = async (req, res) => {
 
         return res.status(201).json({
             message: "Operator created successfully!",
-            user: newUser,
+            user: newOperator,
         });
 
 
