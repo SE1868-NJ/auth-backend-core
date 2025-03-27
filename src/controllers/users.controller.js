@@ -43,6 +43,9 @@ export const changePassword = async (req, res) => {
 
         // Update password
         user.password = hashPassword(newPassword);
+        if (role === "operator") {
+            user.status = "active"
+        }
         await user.save();
 
         return res.status(200).json({

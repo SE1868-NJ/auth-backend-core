@@ -40,7 +40,6 @@ export const login = async (req, res) => {
             // Return error if an invalid role is provided
             return res.status(400).json({ message: "Invalid role specified!" });
         }
-        console.log(user);
 
         // If user authentication fails, return an error response
         if (!user) {
@@ -52,8 +51,14 @@ export const login = async (req, res) => {
             expiresIn: "1h",
         });
 
+
         // Return the generated token in the response
-        return res.status(200).json({ token: accessToken });
+        return res.status(200).json({
+            token: accessToken,
+            user: {
+                status: user.status
+            }
+        });
     } catch (error) {
         // Log the error to the server console for debugging
         console.error("Login Error:", error);
