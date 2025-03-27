@@ -3,6 +3,7 @@ import cryptoRandomString from "crypto-random-string";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config/config.js";
 import sequelize from "../config/sequelize.config.js";
+import { Operator } from "../models/operator.model.js";
 import { Admin } from "../models/admin.model.js";
 import { Role } from "../models/role.model.js";
 import OperatorServices from "../services/operator.service.js";
@@ -48,7 +49,9 @@ export const login = async (req, res) => {
         }
 
         // Generate JWT token with user email and role, valid for 1 hour
-        const accessToken = jwt.sign({ email, role }, JWT_SECRET, { expiresIn: "1h" });
+        const accessToken = jwt.sign({ email, role }, JWT_SECRET, {
+            expiresIn: "1h",
+        });
 
         // Return the generated token in the response
         return res.status(200).json({ token: accessToken });
@@ -175,7 +178,8 @@ export const verifyOtp = async (req, res) => {
 
 export const resetPassword = async (req, res) => {
     try {
-        const { email } = req.body;
+        const { email, role } = req.body;
+
         if (!email) {
             res.status(400).json({ message: "Please provide your email." });
         }
@@ -188,16 +192,27 @@ export const resetPassword = async (req, res) => {
         await sendEmail({
             to: email,
             subject: "Reset password",
-            text: `OTP code: ${newPassword}`,
+            text: `Your new password: ${newPassword}`,
         });
 
         // update database
-        await User.update(
-            { password: hashNewPassword },
-            {
-                where: { email: email },
-            },
-        );
+        if (role != null && role === "operator") {
+            await Operator.update(
+                {
+                    password: hashNewPassword,
+                },
+                {
+                    where: { mail: email },
+                },
+            );
+        } else {
+            await User.update(
+                { password: hashNewPassword },
+                {
+                    where: { email: email },
+                },
+            );
+        }
 
         res.status(200).json({
             message: "A new password has been sent to your email.",
@@ -205,6 +220,7 @@ export const resetPassword = async (req, res) => {
     } catch (error) {
         res.status(500).json({
             message: "An error occur during reset password",
+            error: error.message,
         });
     }
 };
