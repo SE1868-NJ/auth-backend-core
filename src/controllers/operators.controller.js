@@ -32,10 +32,20 @@ export const createOperators = async (req, res) => {
             return res.status(400).json({ message: "All fields are required!" });
         }
 
-        const existingOperator = await Operator.findOne({ where: { email } });
+        // const existingOperator = await Operator.findOne({ where: { email } });
 
-        if (existingOperator) {
-            return res.status(404).json({ message: "Operator is existed!" });
+        // if (existingOperator) {
+        //     return res.status(404).json({ message: "Operator is existed!" });
+        // }
+
+        const existingOperatorEmail = await Operator.findOne({ where: { email } });
+        if (existingOperatorEmail) {
+            return res.status(400).json({ message: "Email / Personal email already exists!" });
+        }
+
+        const existingPersonalEmail = await Operator.findOne({ where: { personalEmail } });
+        if (existingPersonalEmail) {
+            return res.status(400).json({ message: "Email / Personal email already exists!" });
         }
 
         const generatePassword = (length = 12) => {
@@ -147,5 +157,56 @@ export const getOperatorById = async (req, res) => {
         res.status(200).json({ success: true, data: operator });
     } catch (error) {
         res.status(500).json({ success: false, message: "Error fetching operator", error: error.message });
+    }
+};
+
+export const updateOperatorContactInfo = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { phoneNumber, personalEmail } = req.body;
+
+        if (!phoneNumber && !personalEmail) {
+            return res.status(400).json({ message: "At least one field (phoneNumber or personalEmail) is required to update" });
+        }
+
+        const operator = await Operator.findByPk(id);
+        if (!operator) {
+            return res.status(404).json({ message: "Operator not found" });
+        }
+
+        if (phoneNumber) {
+            const phoneRegex = /^[0-9]{10,15}$/;
+            if (!phoneRegex.test(phoneNumber)) {
+                return res.status(400).json({
+                    error: "Invalid phone number format. It should be between 10 to 15 digits",
+                });
+            }
+            operator.phoneNumber = phoneNumber;
+        }
+
+        if (personalEmail) {
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(personalEmail)) {
+                return res.status(400).json({
+                    error: "Invalid email format",
+                });
+            }
+
+            const existingEmail = await Operator.findOne({ where: { personalEmail } });
+            if (existingEmail) {
+                return res.status(400).json({ error: "Personal email already exists" });
+            }
+            operator.personalEmail = personalEmail;
+        }
+
+        await operator.save();
+
+        return res.status(200).json({
+            message: "Operator contact info updated successfully!",
+            operator,
+        });
+    } catch (error) {
+        console.error("Error updating operator contact info:", error);
+        return res.status(500).json({ message: "Internal server error" });
     }
 };
