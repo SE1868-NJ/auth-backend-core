@@ -3,8 +3,8 @@ import cryptoRandomString from "crypto-random-string";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config/config.js";
 import sequelize from "../config/sequelize.config.js";
+import { Admin } from "../models/admin.model.js";
 import { Role } from "../models/role.model.js";
-import { User } from "../models/user.model.js";
 import OperatorServices from "../services/operator.service.js";
 import UserServices from "../services/user.service.js";
 import { hashPassword } from "../utils/index.js";
@@ -66,7 +66,7 @@ export const register = async (req, res) => {
         const { email, password, phone, firstname, lastname, dob, gender } = req.body;
 
         // Check if the user already exists
-        const isUserExist = await User.findOne({
+        const isUserExist = await Admin.findOne({
             where: { email: email },
         });
 
@@ -80,7 +80,7 @@ export const register = async (req, res) => {
             });
 
             // Create the user
-            await User.create({
+            await Admin.create({
                 email,
                 password: hashedPassword,
                 phone,

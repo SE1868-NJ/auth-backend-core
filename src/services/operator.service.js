@@ -6,11 +6,11 @@ const OperatorServices = {
         try {
             const operator = await Operator.findOne({ where: { email } });
             if (!operator) {
-                return null;
+                return { error: "Invalid credentials" };
             }
             const validPassword = await bcrypt.compare(password, operator.password);
             if (!validPassword) {
-                return null;
+                return { error: "Invalid credentials" };
             }
             return operator;
         } catch (error) {

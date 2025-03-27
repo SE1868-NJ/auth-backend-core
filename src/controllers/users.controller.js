@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
+import { Admin } from "../models/admin.model.js";
 import { Operator } from "../models/operator.model.js";
-import { User } from "../models/user.model.js";
 import { hashPassword } from "../utils/index.js";
 
 export const changePassword = async (req, res) => {
@@ -20,7 +20,7 @@ export const changePassword = async (req, res) => {
 
         // Find user by ID
         if (role === "user") {
-            user = await User.findOne({ where: { user_id: userId } });
+            user = await Admin.findOne({ where: { user_id: userId } });
         } else if (role === "operator") {
             user = await Operator.findOne({ where: { operatorID: userId } });
         }
@@ -34,8 +34,6 @@ export const changePassword = async (req, res) => {
 
         // Validate current password
         const isMatch = await bcrypt.compare(password, user.password);
-        console.log(password);
-        console.log(user);
         if (!isMatch) {
             return res.status(401).json({
                 errorCode: 3,

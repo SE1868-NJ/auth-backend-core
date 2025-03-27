@@ -8,8 +8,10 @@ import { sendEmail } from "../utils/mail.utils.js";
 import bcrypt from "bcrypt";
 
 export const getOperators = (req, res) => {
-    Operator.findAll({
-        where: {},
+    User.findAll({
+        where: {
+            role_id: 3,
+        },
     })
         .then((users) => {
             res.status(200).json({
