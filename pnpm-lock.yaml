@@ -14,10 +14,12 @@ importers:
       '@sequelize/postgres':
         specifier: 7.0.0-alpha.43
         version: 7.0.0-alpha.43
+      auth-backend-core:
+        specifier: 'link:'
+        version: 'link:'
       bcrypt:
         specifier: ^5.1.1
         version: 5.1.1
-
       bcryptjs:
         specifier: ^2.4.3
         version: 2.4.3
@@ -1444,7 +1446,6 @@ packages:
 
   tr46@0.0.3:
     resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
-
 
   type-fest@2.19.0:
     resolution: {integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==}
@@ -2977,7 +2978,6 @@ snapshots:
   touch@3.1.1: {}
 
   tr46@0.0.3: {}
-
 
   type-fest@2.19.0: {}
 

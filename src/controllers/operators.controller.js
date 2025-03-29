@@ -31,21 +31,19 @@ export const createOperators = async (req, res) => {
         if (!firstName || !lastName || !email || !phoneNumber || !dateOfBirth || !gender) {
             return res.status(400).json({ message: "All fields are required!" });
         }
-
-        // const existingOperator = await Operator.findOne({ where: { email } });
-
-        // if (existingOperator) {
-        //     return res.status(404).json({ message: "Operator is existed!" });
-        // }
-
+        
         const existingOperatorEmail = await Operator.findOne({ where: { email } });
         if (existingOperatorEmail) {
-            return res.status(400).json({ message: "Email / Personal email already exists!" });
+            return res.status(400).json({ 
+                code: 1,
+                message: "Email / Personal email already exists!" });
         }
 
         const existingPersonalEmail = await Operator.findOne({ where: { personalEmail } });
         if (existingPersonalEmail) {
-            return res.status(400).json({ message: "Email / Personal email already exists!" });
+            return res.status(400).json({ 
+                code: 2,
+                message: "Email / Personal email already exists!" });
         }
 
         const generatePassword = (length = 12) => {
